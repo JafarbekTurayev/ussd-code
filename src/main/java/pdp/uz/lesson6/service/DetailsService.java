@@ -59,47 +59,52 @@ public class DetailsService {
         return new ApiResponse("Successfully exported", true);
     }
 
-    //Simkarta bo'yicha ma'lumotlarni pdfga export qilish
-    public ApiResponse getAllBySimCard(HttpServletResponse response, String simcardId, boolean stat) throws IOException {
-        Client client = (Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<SimCard> simCardList = client.getSimCardList();
-        for (SimCard card : simCardList) {
-            if (card.getId().toString().equals(simcardId)){
-                List<Details> detailsList = detailsRepository.findAllBySimCard(card);
-                return stat?exportToExcel(response, detailsList):exportToPdf(response, detailsList, card.getCode());
-            }
-        }
-        return new ApiResponse("Error!", false);
+    //Simkarta bo'yicha ma'lumotlarni pdfga export qilish //stat=0 -> pdf; stat=1 -> excel; stat=2 -> table
+    public ApiResponse getAllBySimCard(HttpServletResponse response, Integer stat) throws IOException {
+        SimCard card = (SimCard) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Details> detailsList = detailsRepository.findAllBySimCard(card);
+        if (stat==0)
+            return exportToPdf(response, detailsList, card.getCode());
+        if (stat==1)
+            return exportToExcel(response, detailsList);
+        if (stat==2)
+            return new ApiResponse("List for details",true,detailsList);
+
+        return new ApiResponse("Error!",false);
+//        return stat==0?exportToPdf(response, detailsList, card.getCode()):stat==1?exportToExcel(response, detailsList):stat==2?new ApiResponse("List for details",true,detailsList):new ApiResponse("Error!", false);
     }
 
     //Simkarta va action type bo'yicha ma'lumotlarni qaytarish
-    public ApiResponse getAllBySimCardAndActionType(HttpServletResponse response, String simcardId, String action, boolean stat) throws IOException {
-        Client client = (Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<SimCard> simCardList = client.getSimCardList();
-        for (SimCard card : simCardList) {
-            if (card.getId().toString().equals(simcardId)){
-                ActionType actionType = null;
-                for (ActionType value : ActionType.values()) {
-                    if (value.toString().equalsIgnoreCase(action)){
-                        actionType = value;
-                        break;
-                    }
-                }
-                if (actionType == null)
-                    return new ApiResponse("Error action type!", false);
+    public ApiResponse getAllBySimCardAndActionType(HttpServletResponse response, String action, Integer stat) throws IOException {
+        SimCard card = (SimCard) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-                List<Details> detailsList = detailsRepository.findAllByActionTypeAndSimCard(actionType,card);
-                return stat?exportToExcel(response, detailsList):exportToPdf(response, detailsList, card.getCode());
-            }
-        }
-        return new ApiResponse("Error!", false);
+        ActionType actionType = null;
+        for (ActionType value : ActionType.values()) {
+              if (value.toString().equalsIgnoreCase(action)){
+                  actionType = value;
+                  break;
+                 }
+              }
+        if (actionType == null)
+             return new ApiResponse("Error action type!", false);
+
+        List<Details> detailsList = detailsRepository.findAllByActionTypeAndSimCard(actionType,card);
+        if (stat==0)
+            return exportToPdf(response, detailsList, card.getCode());
+        if (stat==1)
+            return exportToExcel(response, detailsList);
+        if (stat==2)
+            return new ApiResponse("List for details",true,detailsList);
+
+        return new ApiResponse("Error!",false);
+//        return stat==0?exportToPdf(response, detailsList, card.getCode()):stat==1?exportToExcel(response, detailsList):stat==2?new ApiResponse("List for details",true,detailsList):new ApiResponse("Error!", false);
     }
 
     //details qo'shish
     public ApiResponse add(DetailDto detailDto){
-        Client principal = (Client) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        for (SimCard simCard : principal.getSimCardList()) {
-            if (simCard.getId().toString().equals(detailDto.getSimCard().getId().toString())){
+        SimCard principal = (SimCard) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+            if (principal.getId().toString().equals(detailDto.getSimCard().getId().toString())){
                 Details details = new Details();
                 details.setAmount(detailDto.getAmount());
                 details.setActionType(detailDto.getActionType());
@@ -107,7 +112,7 @@ public class DetailsService {
                 detailsRepository.save(details);
                 return new ApiResponse("Details saqlandi!", true);
             }
-        }
+
         return new ApiResponse("Error!", false);
     }
 }
