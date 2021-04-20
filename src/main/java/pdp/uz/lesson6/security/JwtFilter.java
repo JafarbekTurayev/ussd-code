@@ -60,17 +60,5 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-
-    }
-
-
-    public static void main(String[] args) {
-        String varianble = "Basic dG9oaXI6MTIzNDU=";
-        String basic = varianble.substring(6);
-        byte[] bytes = Base64
-                .getDecoder()
-                .decode(basic);
-        varianble = new String(bytes, StandardCharsets.UTF_8);
-        System.out.printf(varianble);
     }
 }
