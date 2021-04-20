@@ -8,5 +8,4 @@ import java.util.UUID;
 
 
 public interface FilialRepository extends JpaRepository<Filial, UUID> {
-
 }
