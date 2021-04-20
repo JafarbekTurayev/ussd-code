@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface StaffRepository extends JpaRepository<Staff, UUID> {
     Optional<Staff> findByUserName(String userName);
+    boolean existsByUserName(String userName);
 }
