@@ -1,7 +1,6 @@
 package pdp.uz.lesson6.entity;
 
 import lombok.Data;
-import pdp.uz.lesson6.entity.template.AbsEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

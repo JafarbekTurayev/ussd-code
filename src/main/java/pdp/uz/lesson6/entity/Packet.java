@@ -4,10 +4,10 @@ import lombok.Data;
 import pdp.uz.lesson6.entity.enums.PacketType;
 import pdp.uz.lesson6.entity.template.AbsEntity;
 
-import javax.persistence.*;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Period;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
 import java.util.List;
 
 @Entity
