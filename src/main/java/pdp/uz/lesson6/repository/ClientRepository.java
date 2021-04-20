@@ -8,5 +8,5 @@ import java.util.UUID;
 
 
 public interface ClientRepository extends JpaRepository<Client, UUID> {
-    Optional<Client> findByPhoneNumber(String username);
+    Optional<Client> findByPassportNumber(String username);
 }
