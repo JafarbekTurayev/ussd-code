@@ -32,4 +32,9 @@ public class FilialService {
 //
 //    }
 
+    public static void main(String[] args) {
+        String number="+998995071840";
+        System.out.println(number.substring(4,6));
+    }
+
 }

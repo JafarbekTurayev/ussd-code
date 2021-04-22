@@ -1,5 +1,6 @@
 package pdp.uz.lesson6.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import pdp.uz.lesson6.payload.ApiResponse;
 @RestController
 @RequestMapping("/api/client")
 public class ClientController {
+
 
 
     // USSD cod bilan/appdan  balansni tekshirish

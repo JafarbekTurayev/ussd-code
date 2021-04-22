@@ -7,6 +7,7 @@ import pdp.uz.lesson6.entity.template.AbsEntity;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,22 +22,30 @@ public class SimCard extends AbsEntity implements UserDetails {
     @Column(unique = true)
     private String simCardNumber;
 
+
+    @OneToMany(mappedBy = "simCard", cascade = CascadeType.ALL)
+    private List<DebtSimCard> debtSimCards;
+
     @ManyToOne
     private Client client;
 
-    private boolean active;
+    private boolean active = true;
 
     private double balance;
 
     private String pinCode;
 
+    private double amountMb;
+    private double amountMinute;
+    private double amountSms;
+
     @ManyToOne
     private Tariff tariff; //
 
-    private boolean tariffIsActive;
 
-    private boolean isCredit; //
+    private boolean tariffIsActive = true;
 
+    private boolean isCredit = false; //
 
 
     @Override

@@ -14,12 +14,14 @@ public class Tariff extends AbsEntity {
 
     private String name;
 
+
     @OneToMany(fetch = FetchType.EAGER)
     private List<Packet> includedPackets; //paketlar tarif ichidagi 5DAQ 5MIN 12MB
 
     private double price; //tariff narxi
 
     private double switchPrice; //o'tish narxi
+
 
     private Timestamp expireDate;
 
