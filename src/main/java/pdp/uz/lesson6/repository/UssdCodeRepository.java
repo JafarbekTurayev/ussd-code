@@ -6,6 +6,6 @@ import pdp.uz.lesson6.entity.UssdCode;
 import java.util.UUID;
 
 
-public interface UssdCodeRepository extends JpaRepository<UssdCode, UUID> {
+public interface UssdCodeRepository extends JpaRepository<UssdCode, Integer> {
 
 }
