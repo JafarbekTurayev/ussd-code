@@ -110,4 +110,9 @@ public class FilialService {
         return new ApiResponse("Staff deleted",true);
     }
 
+    public static void main(String[] args) {
+        String number="+998995071840";
+        System.out.println(number.substring(4,6));
+    }
+
 }
