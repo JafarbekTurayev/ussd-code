@@ -4,10 +4,7 @@ import lombok.Data;
 import pdp.uz.lesson6.entity.enums.PacketType;
 import pdp.uz.lesson6.entity.template.AbsEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -17,9 +14,12 @@ public class Packet extends AbsEntity {
     @Enumerated(EnumType.STRING)
     private PacketType packetType;
 
+    @Column(nullable = false,unique = true)
     private String name;
 
     private int amount;
+
+    private int cost;
 
     private int duration; // 5 kunlik
 
