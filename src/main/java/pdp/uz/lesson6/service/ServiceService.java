@@ -1,17 +1,24 @@
 package pdp.uz.lesson6.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import pdp.uz.lesson6.entity.EntertainingService;
 import pdp.uz.lesson6.entity.ServiceCategory;
+import pdp.uz.lesson6.entity.SimCard;
+import pdp.uz.lesson6.entity.enums.ActionType;
 import pdp.uz.lesson6.payload.ApiResponse;
+import pdp.uz.lesson6.payload.DetailDto;
 import pdp.uz.lesson6.payload.ServiceDto;
+import pdp.uz.lesson6.payload.SimcardEntertainingDto;
 import pdp.uz.lesson6.repository.ServiceCategoryRepository;
 import pdp.uz.lesson6.repository.ServiceRepository;
+import pdp.uz.lesson6.repository.SimCardRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -20,6 +27,12 @@ public class ServiceService {
     ServiceRepository serviceRepository;
     @Autowired
     ServiceCategoryRepository serviceCategoryRepository;
+    @Autowired
+    DetailsService detailsService;
+    @Autowired
+    SimCardService simCardservice;
+    @Autowired
+    SimCardRepository simCardRepository;
     public List<EntertainingService> getServiceList(){
         return serviceRepository.findAll();
     }
@@ -31,7 +44,7 @@ public class ServiceService {
         return new ApiResponse("So'rov muvaffaqiyatli yakunladni",false,entertainingService);
     }
     public ApiResponse addEntertainingService(ServiceDto serviceDto){
-        boolean exists = serviceRepository.findByName(serviceDto.getName());
+        boolean exists = serviceRepository.existsByName(serviceDto.getName());
         if (exists)
             return new ApiResponse("bunday nomli xizmat mavjud",false,null);
         EntertainingService entertainingService = new EntertainingService();
@@ -55,7 +68,7 @@ public class ServiceService {
         if (!serviceOptional.isPresent())
             return new ApiResponse("Bunday id dagi xizmat topilmadi",false,null);
         EntertainingService entertainingService = serviceOptional.get();
-        boolean exist = serviceRepository.findByName(serviceDto.getName());
+        boolean exist = serviceRepository.existsByName(serviceDto.getName());
         if (exist)
             return new ApiResponse("bunday xizmat turi mavjud",false,null);
  entertainingService.setName(serviceDto.getName());
@@ -72,5 +85,39 @@ public class ServiceService {
         serviceRepository.save(entertainingService);
         return new ApiResponse("Xizmat muvaffaqiyatli o'zgartirildi",false,entertainingService);
     }
-//public ApiResponse addEntertainingServiceForClient
+public ApiResponse addEntertainingServiceForClient(@RequestBody SimcardEntertainingDto simcardEntertainingDto){
+   SimCard principal = (SimCard) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<EntertainingService> serviceOptional = serviceRepository.findByName(simcardEntertainingDto.getEntertainingName());
+    if (!serviceOptional.isPresent())
+        return new ApiResponse("Bunday xizmat mavjud emas",false,null);
+    EntertainingService entertainingService = serviceOptional.get();
+    if (entertainingService.getPrice()>principal.getBalance()){
+        return new ApiResponse("mablag yetarli emas",false,null);
+    }
+    Set<EntertainingService> entertainingServices = principal.getEntertainingServices();
+    entertainingServices.add(entertainingService);
+    principal.setEntertainingServices(entertainingServices);
+    simCardRepository.save(principal);
+    detailsService.add(new DetailDto(ActionType.SERVICE,principal, (float) entertainingService.getPrice()));
+    entertainingService.setCount(entertainingService.getCount()+1);
+    serviceRepository.save(entertainingService);
+    return new ApiResponse("Ulandi",true,null);
+}
+public ApiResponse deleteEntertainingForClient(@RequestBody SimcardEntertainingDto simcardEntertainingDto){
+    SimCard principal = (SimCard) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<EntertainingService> serviceOptional = serviceRepository.findByName(simcardEntertainingDto.getEntertainingName());
+    if (!serviceOptional.isPresent())
+        return new ApiResponse("Bunday nomli xizmat turi mavjud emas",false,null);
+    EntertainingService entertainingService = serviceOptional.get();
+    principal.getEntertainingServices().remove(entertainingService);
+    entertainingService.setCount(entertainingService.getCount()-1);
+    simCardRepository.save(principal);
+    serviceRepository.save(entertainingService);
+    return new ApiResponse("deleted",true,null);
+
+}
+public ApiResponse getFamousServiceList(){
+    List<EntertainingService> byCountOrderByCount = serviceRepository.findAllByOrderByCountAsc();
+    return new ApiResponse("success",true,byCountOrderByCount);
+}
 }

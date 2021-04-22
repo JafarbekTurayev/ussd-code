@@ -1,5 +1,6 @@
 package pdp.uz.lesson6.controller;
 
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import pdp.uz.lesson6.entity.EntertainingService;
 import pdp.uz.lesson6.payload.ApiResponse;
 import pdp.uz.lesson6.payload.ServiceDto;
+import pdp.uz.lesson6.payload.SimcardEntertainingDto;
 import pdp.uz.lesson6.service.ServiceService;
 
 import java.util.List;
@@ -44,5 +46,21 @@ public class EntertainingServiceController {
         return ResponseEntity.status(201).body(apiResponse);
     }
 
-
+    @Secured({ "ROLE_MANAGER"})
+    @GetMapping("/famous")
+    public HttpEntity<?> getFamousEntertainingList(){
+        List<EntertainingService> serviceList = service.getServiceList();
+        return ResponseEntity.ok(serviceList);
+    }
+@PostMapping("/addEntertaining")
+   public HttpEntity<?> addEntertainingforClient(@RequestBody SimcardEntertainingDto simcardEntertainingDto){
+    ApiResponse apiResponse = service.addEntertainingServiceForClient(simcardEntertainingDto);
+    return ResponseEntity.ok(apiResponse);
 }
+@DeleteMapping("/delete")
+   public HttpEntity<?> deleteEntertainingforClient(@RequestBody SimcardEntertainingDto simcardEntertainingDto) {
+    ApiResponse apiResponse = service.addEntertainingServiceForClient(simcardEntertainingDto);
+    return ResponseEntity.ok(apiResponse);
+}
+    }
+

@@ -22,5 +22,6 @@ public class EntertainingService extends AbsEntity {
     private Timestamp expiredDate;
     @ManyToOne
     private SimCard simCard;
+    private Integer count;
 
 }

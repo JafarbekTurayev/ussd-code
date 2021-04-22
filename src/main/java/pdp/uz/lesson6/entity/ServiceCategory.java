@@ -19,9 +19,9 @@ public class ServiceCategory {
     private Integer id;
     @Column(unique = true)
     private String name;
-    @OneToMany(mappedBy = "ServiceCategory",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "serviceCategory",cascade = CascadeType.REMOVE)
     private List<EntertainingService> entertainingService;
-    private Integer count;
+
 }
 
 
