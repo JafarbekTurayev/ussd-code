@@ -65,7 +65,6 @@ public class DataLoader implements CommandLineRunner {
 //            client.setEnabled(true);
             clientRepository.save(client);
 
-
         }
     }
 }

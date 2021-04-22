@@ -1,13 +1,25 @@
 package pdp.uz.lesson6.payload;
 
+import lombok.Data;
 import pdp.uz.lesson6.entity.Staff;
 
 import java.util.List;
 
+@Data
 public class FilialDto {
     private String name;
 
-    private Staff directorOfFilial;
+    private String DirectorUserName;
 
-    private List<Integer> staffsId;
+    private String DirectorFullName;
+
+    private Integer DirectorRoleId;
+
+    private Integer filialId;
+
+    private String DirectorPosition;
+
+    private String DirectorPassword;
+
+    private List<String> StaffUsernames;
 }
