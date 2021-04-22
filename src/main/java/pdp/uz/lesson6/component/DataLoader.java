@@ -58,15 +58,12 @@ public class DataLoader implements CommandLineRunner {
 
             Client client = new Client();
             client.setClientType(ClientType.USER);
-            client.setPassword(passwordEncoder.encode("123"));
+//            client.setPassword(passwordEncoder.encode("123"));
             client.setRoles(Collections.singleton(roleRepository.findByRoleName(RoleName.ROLE_CLIENT)));
             client.setFullName("Karim Benzema");
-            client.setPhoneNumber("998905556677");
-            client.setEnabled(true);
+            client.setPassportNumber("998905556677");
+//            client.setEnabled(true);
             clientRepository.save(client);
-
-
-
 
         }
     }

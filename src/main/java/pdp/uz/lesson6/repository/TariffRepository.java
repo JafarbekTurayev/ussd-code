@@ -7,5 +7,6 @@ import java.util.UUID;
 
 
 public interface TariffRepository extends JpaRepository<Tariff, UUID> {
-
+    boolean existsByName(String name);
+    Tariff findByName(String name);
 }
