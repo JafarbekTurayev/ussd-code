@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.awt.*;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class ClientDto {
     private String passportNumber;
     private String fullName;
     private Integer clientTypeOrdinal;
+    private List<BuyingSimCardDto> buyingSimCardDtos;
 
 
 }

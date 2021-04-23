@@ -11,4 +11,6 @@ public interface ClientRepository extends JpaRepository<Client, UUID> {
     Optional<Client> findByPassportNumber(String passportNumber);
 
     boolean existsByPassportNumber(String passportNumber);
+
+
 }

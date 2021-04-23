@@ -12,5 +12,7 @@ public interface SimCardRepository extends JpaRepository<SimCard, UUID> {
 
     Optional<SimCard> findByCodeAndNumber(String code, String number);
 
+    boolean existsByNumberAndCode(String number, String code);
+
 
 }

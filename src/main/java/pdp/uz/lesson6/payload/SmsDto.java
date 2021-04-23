@@ -4,17 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import java.util.UUID;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SimCardDto {
-    private String name;
-    private String code;
-
-
-
-
+public class SmsDto {
+    private String code; //94,93
+    private String number; //1234567
 }
