@@ -1,6 +1,10 @@
 package pdp.uz.lesson6.service;
 
+import javafx.scene.control.Pagination;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pdp.uz.lesson6.component.NumberGenerator;
@@ -15,8 +19,7 @@ import pdp.uz.lesson6.payload.DetailDto;
 import pdp.uz.lesson6.payload.SimCardDto;
 import pdp.uz.lesson6.repository.*;
 
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class SimCardService {
@@ -136,6 +139,17 @@ public class SimCardService {
             return new ApiResponse("Your tariff is " + tariff.getName(), true);
         }
         return new ApiResponse("Xatolik", false);
+    }
+
+    public Set<SimCard> getSimCards() {
+        List<SimCard> simCardList = simCardRepository.findAll();
+        Set<SimCard> simCardSet = new HashSet<>();
+        for (SimCard simCard : simCardList) {
+            if (!simCard.isActive()) {
+                simCardSet.add(simCard);
+            }
+        }
+        return simCardSet;
     }
 
 

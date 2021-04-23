@@ -28,7 +28,6 @@ public class ClientService {
     SimCardRepository simCardRepository;
     @Autowired
     RoleRepository roleRepository;
-
     @Autowired
     NumberGenerator numberGenerator;
     @Autowired
