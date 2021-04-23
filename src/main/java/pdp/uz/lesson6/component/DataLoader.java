@@ -8,13 +8,17 @@ import org.springframework.stereotype.Component;
 import pdp.uz.lesson6.entity.Client;
 import pdp.uz.lesson6.entity.Role;
 import pdp.uz.lesson6.entity.Staff;
+import pdp.uz.lesson6.entity.UssdCode;
 import pdp.uz.lesson6.entity.enums.ClientType;
 import pdp.uz.lesson6.entity.enums.RoleName;
 import pdp.uz.lesson6.repository.ClientRepository;
 import pdp.uz.lesson6.repository.RoleRepository;
 import pdp.uz.lesson6.repository.StaffRepository;
+import pdp.uz.lesson6.repository.UssdCodeRepository;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -31,6 +35,9 @@ public class DataLoader implements CommandLineRunner {
 
     @Autowired
     ClientRepository clientRepository;
+
+    @Autowired
+    UssdCodeRepository ussdCodeRepository;
 
 
     @Override
@@ -64,6 +71,40 @@ public class DataLoader implements CommandLineRunner {
             client.setPassportNumber("998905556677");
 //            client.setEnabled(true);
             clientRepository.save(client);
+
+            List<UssdCode> preAddedUssdCodes = new ArrayList<>();
+            UssdCode hisob = new UssdCode();
+            hisob.setCode("*100#");
+            hisob.setDescription("Hisobni tekshirish");
+            preAddedUssdCodes.add(hisob);
+
+            UssdCode internet = new UssdCode();
+            internet.setCode("*101#");
+            internet.setDescription("Internet qoldig'ini tekshirish");
+            preAddedUssdCodes.add(internet);
+
+            UssdCode sms = new UssdCode();
+            sms.setCode("*102#");
+            sms.setDescription("Sms qoldig'ini tekshirish");
+            preAddedUssdCodes.add(sms);
+
+            UssdCode daqiqa = new UssdCode();
+            daqiqa.setCode("*103#");
+            daqiqa.setDescription("Daqiqa qoldig'ini tekshirish");
+            preAddedUssdCodes.add(daqiqa);
+
+            UssdCode internet10Gb = new UssdCode();
+            internet10Gb.setCode("*104#");
+            internet10Gb.setDescription("10 Gb internet paketini sotib olish");
+            preAddedUssdCodes.add(internet10Gb);
+
+            UssdCode minut500 = new UssdCode();
+            minut500.setCode("*105#");
+            minut500.setDescription("500 minutli paketni paketini sotib olish");
+            preAddedUssdCodes.add(minut500);
+
+            ussdCodeRepository.saveAll(preAddedUssdCodes);
+
 
         }
     }
