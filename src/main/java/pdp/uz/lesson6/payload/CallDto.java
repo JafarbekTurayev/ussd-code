@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CallDto {
-    private String phoneNumber;
+    private String code;
+    private String number;
     private double seconds;
 }

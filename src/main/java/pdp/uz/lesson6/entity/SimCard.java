@@ -32,7 +32,7 @@ public class SimCard extends AbsEntity implements UserDetails {
     @ManyToOne
     private Client client;
 
-    private boolean active = true;
+    private boolean active = false;
 
     private double balance;
 
@@ -49,7 +49,7 @@ public class SimCard extends AbsEntity implements UserDetails {
     private Tariff tariff; //
 
 
-    private boolean tariffIsActive = true;
+    private boolean tariffIsActive = false;
 
     private boolean isCredit = false; //
 
