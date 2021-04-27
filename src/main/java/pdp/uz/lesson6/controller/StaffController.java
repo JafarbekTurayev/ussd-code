@@ -41,7 +41,7 @@ public class StaffController {
 
     // Token bo'yicha staff qaytaradi
     @PreAuthorize(value = "hasAnyRole('ROLE_DIRECTOR','ROLE_MANAGER','ROLE_STAFF')")
-    @GetMapping
+    @GetMapping("/one")
     public HttpEntity<?> getStaff(){
         ApiResponse apiResponse = staffService.getStaff();
         return ResponseEntity.status(apiResponse.isSuccess()?200:409).body(apiResponse);
